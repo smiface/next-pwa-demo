@@ -1,8 +1,52 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import axios from "axios";
+import Head from "next/head";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import styles from "../styles/Home.module.css";
+import { useTodos } from "./useTodos";
+
+const Header = () => {
+  return (
+    <div>
+      <p>id</p>
+      <p>title</p>
+      <p></p>
+    </div>
+  );
+};
+
+const AddTodo = ({ hookTodos }) => {
+  return (
+    <div>
+      <input ref={hookTodos.todoTitleRef} />
+      <button onClick={hookTodos.addTodo}> add Todo </button>
+    </div>
+  );
+};
+
+const Todos = ({ hookTodos }) => {
+  return (
+    <div className="todos">
+      <Header />
+      {hookTodos.todos.map((todo) => (
+        <div key={todo.id}>
+          <p>{todo.id}</p>
+          <button
+            style={{ textDecoration: todo.done ? "line-through" : "none" }}
+            onClick={() => hookTodos.toggleTodo(todo.id)}
+          >
+            {todo.title}
+          </button>
+          <button onClick={() => hookTodos.removeTodo(todo.id)}>╳</button>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 export default function Home() {
+  const hookTodos = useTodos();
+
   return (
     <div className={styles.container}>
       <Head>
@@ -11,59 +55,11 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
+      <main>
+        <h1>Todos</h1>
+        <AddTodo hookTodos={hookTodos} />
+        <Todos hookTodos={hookTodos} />
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
     </div>
-  )
+  );
 }

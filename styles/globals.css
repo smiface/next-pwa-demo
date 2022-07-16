@@ -12,5 +12,29 @@ a {
 }
 
 * {
-  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.todos div {
+  display: grid;
+  justify-content: space-between;
+  grid-template-columns:  1fr 2fr  30px;
+  width: 90%;
+  border-bottom: 1px solid #000;
+  align-items: center;
+  padding: 5px 0;
+}
+
+.todos div button:nth-child(2) {
+  width: 90%;
+  height: 100%;
+  text-align-last: left;
+  border: unset;
+  background: unset;
+}
+
+.todos div button:nth-child(3) {
+  height: 30px;
+  width: 30px;
 }
